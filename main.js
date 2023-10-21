@@ -1,7 +1,7 @@
     // ==UserScript==
     // @name         Youtube AdBlock ban bypass
     // @namespace    http://tampermonkey.net/
-    // @version      1.1
+    // @version      1.0
     // @description  Fix the "Ad blockers violate YouTube's Terms of Service" Error
     // @author       Obelous
     // @match        https://www.youtube.com/*
@@ -17,12 +17,22 @@
         currentPageUrl = window.location.href;
     });
 
+    // this is necessary because the script isnt reloaded whenever the user goes to a new video
     document.addEventListener('yt-navigate-finish', function () {
         const newUrl = window.location.href;
-        if (newUrl !== currentPageUrl) {
+        // if player is present and there is a change in url then change the url to the new one
+        if (document.getElementById('youtube-iframe') && newUrl !== currentPageUrl) {
             const url = "https://www.youtube-nocookie.com/embed/" + splitUrl(newUrl) + "?autoplay=1";
             const player = document.getElementById("youtube-iframe");
             player.setAttribute('src', url);
+        }
+        // else if the player is not present create one
+        else if(document.getElementById('youtube-iframe') == null){
+            setTimeout(run, 1000);
+        }
+        // if all else fails reload the page
+        else{
+            location.reload();
         }
     });
 

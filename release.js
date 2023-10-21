@@ -1,5 +1,3 @@
-
-
         // ==UserScript==
         // @name         Youtube AdBlock ban bypass
         // @namespace    http://tampermonkey.net/
