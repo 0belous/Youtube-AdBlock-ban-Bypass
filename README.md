@@ -29,7 +29,7 @@ To fix this use [Another script](https://greasyfork.org/en/scripts/477390-remove
 
 ### Details:
 
-YouTube recently made some changes to their ad policies, if you have an ad blocker installed you will receive a popup telling you ad blockers are not allowed but you can initially close it, the next stage is you have to wait 5 seconds to close the anti-adblocker popup, then finally you will be told you have 3 videos left before your access is blocked, once this is over there are no pop ups to close and you access to youtube is blocked.
+YouTube recently made some changes to their ad policies, if you have an ad blocker installed you will receive a popup telling you ad blockers are not allowed, but you can initially close it, the next stage is you have to wait 5 seconds to close the anti-adblocker popup then finally you will be told you have 3 videos left before your access is blocked, after 3 videos, there are no workarounds and you must disable your adblocker.
 
 The bypass:<br>
 by creating an iframe in place of the youtube video player that has its source set to the video as an embed you can bypass the restriction and watch the video as normal.
