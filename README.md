@@ -1,11 +1,13 @@
-# this repository is an in development version expect bugs
-# for the full release get the script from your greasy fork
+# Youtube AdBlocker ban bypasser V1.2
 
-# Youtube AdBlocker ban bypasser V1.1
+### Contributors:
+ **[Master Racer](https://greasyfork.org/en/users/1200679-master-racer) Fixed fullscreen and autoplay [1.1]**
 
-### Thank you to [Master Racer](https://greasyfork.org/en/users/1200679-master-racer) for fixing some bugs
+ **[Insignia Malignia](https://greasyfork.org/en/users/1207803-insignia-malignia) Fixed issues related to execution [1.2]**
 
-## ✅ Not patched (19/10/23)
+ **[20excal07](https://greasyfork.org/en/users/1205651-20excal07) Fixed compatibility issues and improved URL parsing[1.2]**
+
+## ✅ Not patched (26/10/23)
 
 <hr>
 
@@ -31,10 +33,6 @@ YouTube recently made some changes to their ad policies, if you have an ad block
 
 The bypass:<br>
 by creating an iframe in place of the youtube video player that has its source set to the video as an embed you can bypass the restriction and watch the video as normal.
-
-### Issues:
-
-If your internet connection is slow this script may not work consistently for you as it directly relies on the youtube video player being loaded before the script (I have tried to find ways around this but the only solution is to wait 500ms) so you may have to manually change this in the source code, look for the comment // RUN DELAY and change 500 to 1000, etc until it works for you.
 
 ### Contribute:
 
