@@ -15,10 +15,15 @@ const delay = 200; // Milliseconds to wait after a failed attempt
 const maxTries = 100; // Maximum number of retries in milliseconds
 let tries = 0; // Current number of retries
 
+try{
 window.addEventListener('beforeunload', function() {
     currentPageUrl = window.location.href;
 });
+}catch(e){
+    console.error('AdBlock Bypass: Failed to preserve URL    '+e);
+}
 
+try{
 document.addEventListener('yt-navigate-finish', function() {
     const newUrl = window.location.href;
     if (newUrl !== currentPageUrl) {
@@ -27,13 +32,21 @@ document.addEventListener('yt-navigate-finish', function() {
         player.setAttribute('src', url);
     }
 });
+}catch(e){
+    console.error('AdBlock Bypass: Failed to refresh player URL    '+e);
+}
 
-// returns the video ID
+// Get the video id from the url
+try{
 function splitUrl(str) {
     return str.split('=')[1].split('&')[0];
 }
+}catch(e){
+    console.error('Failed to split url'+e);
+}
 
 // main function
+try{
 function run() {
     const block = document.querySelector('.yt-playability-error-supported-renderers');
     if (!block) {
@@ -44,7 +57,11 @@ function run() {
         magic();
     }
 }
+}catch(e){
+    console.error('AdBlock Bypass: Failed to run    '+e);
+}
 
+try{
 function magic() {
     console.log("Loaded");
     // remove block screen
@@ -72,6 +89,9 @@ function magic() {
     // append the elements to the DOM
     oldplayer.appendChild(player);
     console.log('Finished');
+}
+}catch(e){
+    console.error('AdBlock Bypass: Failed to replace player    '+e);
 }
 
 // Execute the code
