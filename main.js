@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name Youtube AdBlock ban bypass
 // @namespace http://tampermonkey.net/
-// @version 1.2
+// @version 1.3
 // @description Fix the "Ad blockers violate YouTube's Terms of Service" Error
 // @author Obelous
 // @match https://www.youtube.com/*
@@ -15,39 +15,48 @@ const delay = 200; // Milliseconds to wait after a failed attempt
 const maxTries = 100; // Maximum number of retries in milliseconds
 let tries = 0; // Current number of retries
 
-try{
 window.addEventListener('beforeunload', function() {
+    try{
     currentPageUrl = window.location.href;
+    }catch(e){
+        console.error('AdBlock Bypass: Failed to preserve URL    '+e);
+    }
 });
-}catch(e){
-    console.error('AdBlock Bypass: Failed to preserve URL    '+e);
-}
 
-try{
 document.addEventListener('yt-navigate-finish', function() {
-    const newUrl = window.location.href;
-    if (newUrl !== currentPageUrl) {
-        const url = "https://www.youtube-nocookie.com/embed/" + splitUrl(newUrl) + "?autoplay=1";
+    try{
+        const newUrl = window.location.href;
+        if (newUrl !== currentPageUrl) {
+            let url = "";
+        if(window.location.href.includes('&list')){
+            url = "https://www.youtube-nocookie.com/embed/" + extractParams(window.location.href).videoId + "?autoplay=1&list=" + extractParams(window.location.href).playlistId + "&index=" + extractParams(window.location.href).index;
+        }else{
+            url = "https://www.youtube-nocookie.com/embed/" + splitUrl(window.location.href) + "?autoplay=1";
+        }
+        console.log(url);
         const player = document.getElementById("youtube-iframe");
         player.setAttribute('src', url);
     }
+    }catch(e){
+        console.error('AdBlock Bypass: Failed to refresh player URL    '+e);
+    }
 });
-}catch(e){
-    console.error('AdBlock Bypass: Failed to refresh player URL    '+e);
-}
+
 
 // Get the video id from the url
-try{
 function splitUrl(str) {
+    try{
     return str.split('=')[1].split('&')[0];
-}
-}catch(e){
+    }catch(e){
     console.error('Failed to split url'+e);
+    }
 }
 
+
 // main function
-try{
+
 function run() {
+    try{
     const block = document.querySelector('.yt-playability-error-supported-renderers');
     if (!block) {
         if (tries === maxTries) return;
@@ -56,20 +65,37 @@ function run() {
     } else {
         magic();
     }
-}
-}catch(e){
-    console.error('AdBlock Bypass: Failed to run    '+e);
+    }catch(e){
+        console.error('AdBlock Bypass: Failed to run    '+e);
+    }
 }
 
-try{
+
+// URL parser
+function extractParams(url) {
+    const urlObj = new URL(url);
+    const params = new URLSearchParams(urlObj.search);
+    const videoId = params.get('v');
+    const playlistId = params.get('list');
+    const index = params.get('index');
+    return { videoId, playlistId, index };
+}
+
+
 function magic() {
+    try{
     console.log("Loaded");
     // remove block screen
     const block = document.querySelector('.yt-playability-error-supported-renderers');
     if (!block) return;
     block.parentNode.removeChild(block);
     // get the url for the iframe
-    const url = "https://www.youtube-nocookie.com/embed/" + splitUrl(window.location.href) + "?autoplay=1";
+    let url = "";
+    if(window.location.href.includes('&list')){
+        url = "https://www.youtube-nocookie.com/embed/" + extractParams(window.location.href).videoId + "?autoplay=1&list=" + extractParams(window.location.href).playlistId + "&index=" + extractParams(window.location.href).index;
+    }else{
+        url = "https://www.youtube-nocookie.com/embed/" + splitUrl(window.location.href) + "?autoplay=1";
+    }
     // get the mount point for the iframe
     const oldplayer = document.getElementById("error-screen");
     // create the iframe
@@ -89,9 +115,9 @@ function magic() {
     // append the elements to the DOM
     oldplayer.appendChild(player);
     console.log('Finished');
-}
-}catch(e){
-    console.error('AdBlock Bypass: Failed to replace player    '+e);
+    }catch(e){
+        console.error('AdBlock Bypass: Failed to replace player    '+e);
+    }
 }
 
 // Execute the code
