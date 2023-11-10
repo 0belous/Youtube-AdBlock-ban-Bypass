@@ -52,7 +52,7 @@ function magic() {
     if (!block) return;
     block.parentNode.removeChild(block);
     // get the url for the iframe
-    const url = "https://www.youtube-nocookie.com/embed/" + splitUrl(window.location.href) + "?autoplay=1";
+    const url = "https://www.youtube-nocookie.com/embed/" + splitUrl(window.location.href) + "?autoplay=1&modestbranding=1";
     // get the mount point for the iframe
     const oldplayer = document.getElementById("error-screen");
     // create the iframe
