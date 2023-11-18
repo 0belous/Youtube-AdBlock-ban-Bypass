@@ -1,6 +1,6 @@
 # Youtube AdBlocker ban bypasser V1.3
 
-# [![image](https://i.ibb.co/Vj1fZbF/vector60-6330-01.png)](https://github.com/0belous/Youtube-AdBlock-ban-Bypass/raw/main/main.user.js)
+# [![image](https://i.ibb.co/kJYrMVW/back.png)](https://github.com/0belous/Youtube-AdBlock-ban-Bypass/raw/main/main.user.js)
 
 ### Contributors:
  **✨ [Master Racer](https://greasyfork.org/en/users/1200679-master-racer) Fixed fullscreen and autoplay [1.1]**
