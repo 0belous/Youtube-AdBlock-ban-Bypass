@@ -1,5 +1,7 @@
 # Youtube AdBlocker ban bypasser V1.3
 
+## ✅ Not patched (18/11/23)
+
 # [![image](https://i.ibb.co/kJYrMVW/back.png)](https://github.com/0belous/Youtube-AdBlock-ban-Bypass/raw/main/main.user.js)
 
 ### Contributors:
@@ -12,8 +14,6 @@
  **✨ [20excal07](https://greasyfork.org/en/users/1205651-20excal07) Fixed various bugs and improved code in general[1.3]**
 
  **✨ [Hugo COLLIN](https://github.com/Hugo-COLLIN) Hiding the youtube logo in the player[1.3]**
-
-## ✅ Not patched (18/11/23)
 
 <hr>
 

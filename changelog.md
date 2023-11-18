@@ -1,6 +1,6 @@
 # Youtube AdBlocker ban bypasser V1.3
 
-Big thank you to Master Racer for contributing alot for this update!
+Big thank you to Master Racer for contributing alot in this update!
 
 ```
 🐞 Cleanup code
@@ -10,6 +10,6 @@ Big thank you to Master Racer for contributing alot for this update!
 🐞 Fix playing in the background
 
 🐞 Hide youtube logo
-
-🐞 Closer to fixing playlists
 ```
+
+Getting closer to fixing playlists
