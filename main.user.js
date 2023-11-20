@@ -19,7 +19,7 @@ let tries = 0; // Current number of retries
 
 window.addEventListener('load', function() {
     try {
-        const playerElements = ["ytp-pause-overlay", "ytp-scroll-min", "ytp-copylink-button", "ytp-title-channel", "ytp-title", "ytp-gradient-top"];
+        const playerElements = ["ytp-pause-overlay", "ytp-scroll-min", "ytp-copylink-button", "ytp-title-channel", "ytp-title", "ytp-gradient-top", "ytp-youtube-button"];
         playerElements.forEach(function(elementStr) {
             const element = document.getElementsByClassName(elementStr);
             if (element) {
@@ -145,7 +145,7 @@ function bringToFront(target_id) {
 
 function createIframe(newUrl) {
     let url = "";
-    const commonArgs = "autoplay=1&modestbranding=1";
+    const commonArgs = "autoplay=1";
     if(newUrl.includes('&list')){
         const params = extractParams(newUrl);
         url = "https://www.youtube-nocookie.com/embed/" + params.videoId + "?" + commonArgs + "&list=" + params.playlistId + "&index=" + params.index;
