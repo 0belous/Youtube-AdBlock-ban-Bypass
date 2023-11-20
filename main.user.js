@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name          Youtube AdBlock ban bypass
 // @namespace     http://tampermonkey.net/
-// @version       1.3
+// @version       1.3.1
 // @description   Fix the "Ad blockers violate YouTube's Terms of Service" Error
 // @author        Obelous
 // @contributors  Master Racer, Insignia Malignia, 20excal07
@@ -16,6 +16,21 @@ let currentPageUrl = window.location.href;
 const delay = 200; // Milliseconds to wait after a failed attempt
 const maxTries = 100; // Maximum number of retries in milliseconds
 let tries = 0; // Current number of retries
+
+window.addEventListener('load', function() {
+    try {
+        const playerElements = ["ytp-pause-overlay", "ytp-scroll-min", "ytp-copylink-button", "ytp-title-channel", "ytp-title", "ytp-gradient-top", "ytp-youtube-button"];
+        playerElements.forEach(function(elementStr) {
+            const element = document.getElementsByClassName(elementStr);
+            if (element) {
+                element[0].style.visibility = "hidden";
+                element[0].style.display = "none";
+            }
+        });
+    } catch(e) {
+        console.error("Attempted to hide player elements, but they don't yet exist. " + e);
+    }
+}, false);
 
 window.addEventListener('beforeunload', function() {
     try {
@@ -130,9 +145,10 @@ function bringToFront(target_id) {
 
 function createIframe(newUrl) {
     let url = "";
-    const commonArgs = "autoplay=1&modestbranding=1";
+    const commonArgs = "autoplay=1";
     if(newUrl.includes('&list')){
-        url = "https://www.youtube-nocookie.com/embed/" + extractParams(newUrl).videoId + "?" + commonArgs + "&list=" + extractParams(newUrl).playlistId + "&index=" + extractParams(newUrl).index;
+        const params = extractParams(newUrl);
+        url = "https://www.youtube-nocookie.com/embed/" + params.videoId + "?" + commonArgs + "&list=" + params.playlistId + "&index=" + params.index;
     }else{
         url = "https://www.youtube-nocookie.com/embed/" + splitUrl(newUrl) + "?" + commonArgs + getTimestampFromUrl(newUrl);
     }
