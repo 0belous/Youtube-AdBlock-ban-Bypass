@@ -133,7 +133,7 @@ function createIframe(newUrl) {
     const commonArgs = "autoplay=1&modestbranding=1";
     const params = extractParams(newUrl);
     if(newUrl.includes('&list')){
-        url = "https://www.youtube.com/nocookie.com/embed/" + params.videoId + "?" + commonArgs + "&list=" + params.playlistId + "&index=" + params.index;
+        url = "https://www.youtube-nocookie.com/embed/" + params.videoId + "?" + commonArgs + "&list=" + params.playlistId + "&index=" + params.index;
     } else {
         url = "https://www.youtube-nocookie.com/embed/" + params.videoId + "?" + commonArgs + getTimestampFromUrl(newUrl);
     }
