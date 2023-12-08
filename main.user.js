@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name          Youtube AdBlock ban bypass
 // @namespace     http://tampermonkey.net/
-// @version       1.3
+// @version       1.4
 // @description   Fix the "Ad blockers violate YouTube's Terms of Service" Error
 // @author        Obelous
 // @contributors  Master Racer, Insignia Malignia, 20excal07
@@ -36,6 +36,12 @@ document.addEventListener('yt-page-type-changed', function() {
 document.addEventListener('yt-navigate-finish', function() {
     try {
         const newUrl = window.location.href;
+        // If not on video page remove player
+        const player = document.getElementById("youtube-iframe");w
+        // Remove player if not on video
+        if(newUrl.endsWith('.com/')){
+            player.remove();
+        }
         if (newUrl !== currentPageUrl) {
             createIframe(newUrl);
         }
