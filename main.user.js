@@ -179,6 +179,23 @@ function setYtPlayerAttributes(player, url){
     player.setAttribute('webkitallowfullscreen', "webkitallowfullscreen");
 }
 
+// Todo: get rid of this janky solution for double audio
+function removeDuplicate() {
+  var iframes = document.querySelectorAll('#youtube-iframe');
+  var uniqueIds = {};
+  console.log(uniqueIds);
+
+  iframes.forEach(function (iframe) {
+    var iframeId = iframe.id;
+
+    if (uniqueIds[iframeId]) {
+      iframe.remove();
+    } else {
+      uniqueIds[iframeId] = true;
+    }
+  });
+  }
+setInterval(removeDuplicate, 5000);
 // Execute the code
 (function() {
     'use strict';
