@@ -1,15 +1,6 @@
-# Youtube AdBlocker ban bypasser V1.3
-
-Big thank you to Master Racer for contributing alot in this update!
-
 ```
-🐞 Cleanup code
-
-🐞 Support timestamp tags
-
-🐞 Fix playing in the background
-
-🐞 Hide youtube logo
+🐞 Temporary fix for "double audio bug"
 ```
+###### *If this breaks stuff even more complain in the feedback and I'll fix it*
 
-Getting closer to fixing playlists
+Unfortunately I have not been able to get the issue to trigger in a development environment, if anyone who is who is getting this bug would like to do some testing, DM me on discord my username is `obelous`
