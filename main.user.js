@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name          Youtube AdBlock ban bypass
 // @namespace     http://tampermonkey.net/
-// @version       1.4
+// @version       1.5
 // @description   Fix the "Ad blockers violate YouTube's Terms of Service" Error
 // @author        Obelous
 // @contributors  Master Racer, Insignia Malignia, 20excal07
@@ -11,12 +11,12 @@
 // @grant         none
 // @license       MIT
 // ==/UserScript==
-
+ 
 let currentPageUrl = window.location.href;
 const delay = 200; // Milliseconds to wait after a failed attempt
 const maxTries = 100; // Maximum number of retries in milliseconds
 let tries = 0; // Current number of retries
-
+ 
 window.addEventListener('beforeunload', function() {
     try {
         currentPageUrl = window.location.href;
@@ -24,7 +24,7 @@ window.addEventListener('beforeunload', function() {
         console.error('AdBlock Bypass: Failed to preserve URL    '+e);
     }
 });
-
+ 
 document.addEventListener('yt-page-type-changed', function() {
     const newUrl = window.location.href;
     // remove the player iframe when the user navigates away from a "watch" page
@@ -32,33 +32,34 @@ document.addEventListener('yt-page-type-changed', function() {
         removeIframe();
     }
 });
-
-document.addEventListener('yt-navigate-finish', function() {
-    try {
-        const newUrl = window.location.href;
-        // If not on video page remove player
-        const player = document.getElementById("youtube-iframe");w
-        // Remove player if not on video
-        if(newUrl.endsWith('.com/')){
-            player.remove();
-        }
-        if (newUrl !== currentPageUrl) {
+ 
+document.addEventListener('yt-navigate-finish', function () {
+    setTimeout(() => {
+        try {
+            const newUrl = window.location.href;
             createIframe(newUrl);
+        } catch (e) {
+            console.error('AdBlock Bypass: Failed to refresh player URL after delay', e);
         }
-    } catch(e) {
-        console.error('AdBlock Bypass: Failed to refresh player URL    '+e);
-    }
+    }, 100); // 100ms delay to allow URL to update
 });
-
-// Get the video id from the url
-function splitUrl(str) {
-    try{
-        return str.split('=')[1].split('&')[0];
-    } catch(e) {
-        console.error('Failed to split url'+e);
+ 
+// Get the video ID from the URL
+function splitUrl(url) {
+    try {
+        const params = new URLSearchParams(new URL(url).search);
+        const videoId = params.get('v');
+        if (!videoId) {
+            console.error('AdBlock Bypass: Failed to find video ID in URL');
+        }
+        return videoId;
+    } catch (e) {
+        console.error('AdBlock Bypass: Failed to parse video ID from URL', e);
+        return null;
     }
 }
-
+ 
+ 
 // main function
 function run() {
     try {
@@ -74,7 +75,7 @@ function run() {
         console.error('AdBlock Bypass: Failed to run    '+e);
     }
 }
-
+ 
 // URL parser
 function extractParams(url) {
     const urlObj = new URL(url);
@@ -84,7 +85,7 @@ function extractParams(url) {
     const index = params.get('index');
     return { videoId, playlistId, index };
 }
-
+ 
 function magic() {
     try{
         console.log("Loaded");
@@ -100,7 +101,7 @@ function magic() {
         console.error('AdBlock Bypass: Failed to replace player    '+e);
     }
 }
-
+ 
 // get the timestamp tag from the video URL, if any
 function getTimestampFromUrl(str) {
     const timestamp = str.split("t=")[1];
@@ -122,7 +123,7 @@ function getTimestampFromUrl(str) {
     }
     return "";
 }
-
+ 
 // bring the iframe to the front - this helps with switching between theater & default mode
 function bringToFront(target_id) {
     const all_z = [];
@@ -133,40 +134,50 @@ function bringToFront(target_id) {
     const new_max_index = max_index + 1;
     document.getElementById(target_id).style.zIndex = new_max_index;
 }
-
+ 
 function createIframe(newUrl) {
     let url = "";
     const commonArgs = "autoplay=1&modestbranding=1";
-    if(newUrl.includes('&list')){
-        url = "https://www.youtube-nocookie.com/embed/" + extractParams(newUrl).videoId + "?" + commonArgs + "&list=" + extractParams(newUrl).playlistId + "&index=" + extractParams(newUrl).index;
-    }else{
-        url = "https://www.youtube-nocookie.com/embed/" + splitUrl(newUrl) + "?" + commonArgs + getTimestampFromUrl(newUrl);
+ 
+    const videoId = splitUrl(newUrl);
+    if (!videoId) {
+        console.error('AdBlock Bypass: Cannot create iframe, video ID is undefined');
+        return;
     }
-    console.log(url);
-
-    // recreate the player iframe if it was removed
+ 
+    const timestamp = getTimestampFromUrl(newUrl);
+    url = `https://www.youtube-nocookie.com/embed/${videoId}?${commonArgs}${timestamp}`;
+ 
+    console.log(`Iframe URL: ${url}`);
+ 
     let player = document.getElementById("youtube-iframe");
-    if(!player) {
-        // get the mount point for the iframe
+    if (!player) {
         const oldplayer = document.getElementById("error-screen");
-        // create the iframe
+        if (!oldplayer) {
+            console.error("AdBlock Bypass: Error screen element not found!");
+            return;
+        }
+ 
         player = document.createElement('iframe');
         setYtPlayerAttributes(player, url);
         player.style = "height:100%;width:100%;border-radius:12px;";
         player.id = "youtube-iframe";
-        // append the elements to the DOM
+ 
         oldplayer.appendChild(player);
     } else {
         setYtPlayerAttributes(player, url);
     }
+ 
     bringToFront("youtube-iframe");
 }
-
+ 
 function removeIframe() {
     const player = document.getElementById("youtube-iframe");
-    player.parentNode.removeChild(player);
+    if (player && player.parentNode) {
+        player.parentNode.removeChild(player);
+    }
 }
-
+ 
 function setYtPlayerAttributes(player, url){
     // set all the necessary player attributes here
     player.setAttribute('src', url);
@@ -178,23 +189,17 @@ function setYtPlayerAttributes(player, url){
     player.setAttribute('oallowfullscreen', "oallowfullscreen");
     player.setAttribute('webkitallowfullscreen', "webkitallowfullscreen");
 }
-
-// Todo: get rid of this janky solution for double audio
+ 
 function removeDuplicate() {
-  var iframes = document.querySelectorAll('#youtube-iframe');
-  var uniqueIds = {};
-  console.log(uniqueIds);
-
-  iframes.forEach(function (iframe) {
-    var iframeId = iframe.id;
-
-    if (uniqueIds[iframeId]) {
-      iframe.remove();
-    } else {
-      uniqueIds[iframeId] = true;
+    const iframes = document.querySelectorAll('#youtube-iframe');
+    if (iframes.length > 1) {
+        // Keep only the first iframe and remove the rest
+        for (let i = 1; i < iframes.length; i++) {
+            iframes[i].remove();
+        }
     }
-  });
-  }
+}
+ 
 setInterval(removeDuplicate, 5000);
 // Execute the code
 (function() {

@@ -1,7 +1,6 @@
-# Youtube AdBlocker ban bypasser V1.4
+# Youtube AdBlocker ban bypasser V1.5
 
-## ❕ Not patched (16/01/24)
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Functioning with bugs (as reported by users)
+## ✅ Not patched 20/12/24
 
 ### Contributors:
  **✨ [Master Racer](https://greasyfork.org/en/users/1200679-master-racer) Fixed fullscreen and autoplay [1.1]**
@@ -33,8 +32,6 @@ To fix this use [Another script](https://greasyfork.org/en/scripts/477390-remove
 <hr>
 
 ### Details:
-
-Most big ad blockers have implemented their own workarounds, I would only recommend using this script as a last resort or as a backup
 
 YouTube recently made some changes to their ad policies, if you have an ad blocker installed you will receive a popup telling you ad blockers are not allowed, but you can initially close it, the next stage is you have to wait 5 seconds to close the anti-adblocker popup then finally you will be told you have 3 videos left before your access is blocked, after 3 videos, there are no workarounds and you must disable your adblocker.
 
