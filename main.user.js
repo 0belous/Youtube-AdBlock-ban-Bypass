@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name          Youtube AdBlock ban bypass
 // @namespace     http://tampermonkey.net/
-// @version       1.5
+// @version       1.6
 // @description   Fix the "Ad blockers violate YouTube's Terms of Service" Error
 // @author        Obelous
 // @contributors  Master Racer, Insignia Malignia, 20excal07
@@ -163,7 +163,12 @@ function createIframe(newUrl) {
         player.style = "height:100%;width:100%;border-radius:12px;";
         player.id = "youtube-iframe";
  
-        oldplayer.appendChild(player);
+        // oldplayer.appendChild(player);
+
+        const youtubePlayer = document.querySelector('ytd-player#ytd-player');
+        const youtubePlayerContents = document.querySelector('ytd-player#ytd-player > *');
+        youtubePlayerContents.style.display = 'none';
+        youtubePlayer.appendChild(player);
     } else {
         setYtPlayerAttributes(player, url);
     }
